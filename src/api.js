@@ -1,8 +1,10 @@
 const express = require("express");
 const { faker } = require("@faker-js/faker");
-const app = express();
+const serverless = require("serverless-http");
 
-const PORT = 4000;
+const app = express();
+const router = express.Router();
+
 
 function createRandomUser() {
   return {
@@ -14,12 +16,15 @@ function createRandomUser() {
   };
 }
 
-app.get("/all", (_req, res) => {
-  const FAKE_API_JSON = {
+router.get("/all", (_req, res) => {
+  const FAKE_JSON = {
     users: Array.from({ length: 20 }, createRandomUser),
   };
 
-  res.send(FAKE_API_JSON);
+  res.send(FAKE_JSON);
 });
 
-app.listen(PORT, () => console.log("Running in port:", PORT));
+app.use(`/.netlify/functions/api`, router);
+
+module.exports = app;
+module.exports.handler = serverless(app);
