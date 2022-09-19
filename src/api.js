@@ -5,7 +5,6 @@ const serverless = require("serverless-http");
 const app = express();
 const router = express.Router();
 
-
 function createRandomUser() {
   return {
     id: faker.datatype.uuid(),
@@ -17,10 +16,7 @@ function createRandomUser() {
 }
 
 router.get("/all", (_req, res) => {
-  const FAKE_JSON = {
-    users: Array.from({ length: 20 }, createRandomUser),
-  };
-
+  const FAKE_JSON = Array.from({ length: 20 }, createRandomUser);
   res.send(FAKE_JSON);
 });
 
